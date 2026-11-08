@@ -22,8 +22,12 @@ int main(void) {
 
     terminal_init();
 
-    const DWORD64 generation_interval_ms = 500; // ms to update simulation
+    DWORD64 generation_interval_ms = 500; // ms to update simulation
     DWORD64 last_update = GetTickCount64();
+
+    const DWORD64 min_interval_ms = 25;
+    const DWORD64 max_interval_ms = 2500;
+    const DWORD64 speed_step_ms = 25;
 
     while (running) {
         int key = terminal_read_key();
@@ -52,6 +56,20 @@ int main(void) {
                 needs_render = true;
             }
             break;
+
+        case '+':
+            if (generation_interval_ms > min_interval_ms) {
+                generation_interval_ms -= speed_step_ms;
+                needs_render = true;
+            }
+            break;
+
+        case '-':
+            if (generation_interval_ms < max_interval_ms) {
+                generation_interval_ms += speed_step_ms;
+                needs_render = true;
+            }
+            break;
         }
 
         if (!running)
@@ -70,7 +88,10 @@ int main(void) {
 
         if (needs_render) {
             terminal_clear();
-            printf("Generation: %d", generation);
+            printf("Generation: %d  ", generation);
+
+            printf("Interval: %llu ms",
+                   (unsigned long long)generation_interval_ms);
 
             if (paused)
                 printf(" [PAUSED]");
