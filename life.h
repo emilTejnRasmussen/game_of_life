@@ -12,5 +12,7 @@ typedef struct {
 
 void next_generation(GameOfLife *game);
 
+void life_seed_random(GameOfLife *game, int alive_percentage); 
+
 #endif
 

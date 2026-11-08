@@ -1,19 +1,19 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <windows.h>
 
 #include "life.h"
 #include "terminal.h"
 
+#define ALIVE_PERCENTAGE 30
+
 int main(void) {
     GameOfLife game = {0};
 
-    game.cells[0][1] = true;
-    game.cells[1][2] = true;
-    game.cells[2][0] = true;
-    game.cells[2][1] = true;
-    game.cells[2][2] = true;
+    srand((unsigned int)time(NULL));
+    life_seed_random(&game, ALIVE_PERCENTAGE);
 
     int generation = 0;
     bool running = true;
@@ -69,6 +69,14 @@ int main(void) {
                 generation_interval_ms += speed_step_ms;
                 needs_render = true;
             }
+            break;
+
+        case 'R':
+        case 'r':
+            life_seed_random(&game, ALIVE_PERCENTAGE);
+            generation = 0;
+            last_update = GetTickCount64();
+            needs_render = true;
             break;
         }
 

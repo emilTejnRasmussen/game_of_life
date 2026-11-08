@@ -1,5 +1,6 @@
 #include "life.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 static int count_neighbors(bool grid[ROWS][COLS], int row, int col);
@@ -48,3 +49,11 @@ static int count_neighbors(bool grid[ROWS][COLS], int row, int col) {
     return neighbors;
 }
 
+void life_seed_random(GameOfLife *game, int alive_percentage)
+{
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            game->cells[i][j] = (rand() % 100) < alive_percentage;
+        }
+    }
+}
