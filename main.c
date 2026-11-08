@@ -18,20 +18,14 @@ int main(void) {
     int generation = 0;
     bool running = true;
     bool paused = false;
+    bool needs_render = true;
 
     terminal_init();
 
+    const DWORD64 interval = 500; // ms to update simulation
+    DWORD64 last_update = GetTickCount64();
+
     while (running) {
-        terminal_clear();
-
-        printf("Generation: %d", generation);
-
-        if (paused)
-            printf(" [PAUSED]");
-
-        putchar('\n');
-
-        terminal_render(&game);
         int key = terminal_read_key();
 
         switch (key) {
@@ -42,19 +36,43 @@ int main(void) {
 
         case ' ':
             paused = !paused;
+            needs_render = true;
+
+            if (!paused) {
+                last_update = GetTickCount64();
+            }
+
             break;
         }
 
         if (!running)
             break;
 
-        Sleep(500);
+        DWORD64 now = GetTickCount64();
+        DWORD64 time_passed = now - last_update;
 
-        if (paused)
-            continue;
+        if (!paused && time_passed >= interval) {
+            next_generation(&game);
+            generation++;
 
-        next_generation(&game);
-        generation++;
+            needs_render = true;
+            last_update = now;
+        }
+
+        if (needs_render) {
+            terminal_clear();
+            printf("Generation: %d", generation);
+
+            if (paused)
+                printf(" [PAUSED]");
+
+            putchar('\n');
+            terminal_render(&game);
+
+            needs_render = false;
+        }
+
+        Sleep(10);
     }
 
     return EXIT_SUCCESS;
