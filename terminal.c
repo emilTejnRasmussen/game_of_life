@@ -63,10 +63,10 @@ static void render_header(const GameOfLife *game, int generation,
     int total = ROWS * COLS;
     double density = (double)alive / total * 100.0;
 
-    printf(COLOR_GREEN "CONWAY'S GAME OF LIFE" COLOR_RESET);
+    printf(COLOR_GREEN "\033[2k CONWAY'S GAME OF LIFE" COLOR_RESET);
 
     printf("                      ");
-    printf(paused ? COLOR_YELLOW "PAUSED" COLOR_RESET
+    printf(paused ? COLOR_YELLOW "\033[2k PAUSED" COLOR_RESET
                   : COLOR_GREEN "RUNNING" COLOR_RESET);
     printf("\n");
 
