@@ -7,8 +7,12 @@ void terminal_init(void);
 
 void terminal_clear(void);
 
+void terminal_home(void);
+
 void terminal_render(const GameOfLife *game);
 
 int terminal_read_key(void);
+
+void terminal_cleanup(void);
 
 #endif

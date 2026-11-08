@@ -9,11 +9,20 @@
 void terminal_init()
 {
     SetConsoleOutputCP(CP_UTF8);
+    printf("\033[?1049h");  // Enter alternate screen
+    printf("\033[?25l");    // Hide cursor
+
+    fflush(stdout);
 }
 
 void terminal_clear(void)
 {
     printf("\033[2J\033[H");
+}
+
+void terminal_home(void)
+{
+    printf("\033[H");
 }
 
 void terminal_render(const GameOfLife *game)
@@ -36,4 +45,11 @@ int terminal_read_key()
     }
 
     return -1;
+}
+
+void terminal_cleanup(void)
+{
+    printf("\033[?25h");    // Show cursor
+    printf("\033[?1049l");  // Restore original screen
+    fflush(stdout);    
 }

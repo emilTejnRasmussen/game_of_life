@@ -21,6 +21,7 @@ int main(void) {
     bool needs_render = true;
 
     terminal_init();
+    terminal_clear();
 
     DWORD64 generation_interval_ms = 500; // ms to update simulation
     DWORD64 last_update = GetTickCount64();
@@ -95,7 +96,7 @@ int main(void) {
         }
 
         if (needs_render) {
-            terminal_clear();
+            terminal_home();
             printf("Generation: %d  ", generation);
 
             printf("Interval: %llu ms",
@@ -112,6 +113,8 @@ int main(void) {
 
         Sleep(10);
     }
+
+    terminal_cleanup();
 
     return EXIT_SUCCESS;
 }
