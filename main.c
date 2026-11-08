@@ -22,7 +22,7 @@ int main(void) {
 
     terminal_init();
 
-    const DWORD64 interval = 500; // ms to update simulation
+    const DWORD64 generation_interval_ms = 500; // ms to update simulation
     DWORD64 last_update = GetTickCount64();
 
     while (running) {
@@ -43,6 +43,15 @@ int main(void) {
             }
 
             break;
+
+        case 'N':
+        case 'n':
+            if (paused) {
+                next_generation(&game);
+                generation++;
+                needs_render = true;
+            }
+            break;
         }
 
         if (!running)
@@ -51,7 +60,7 @@ int main(void) {
         DWORD64 now = GetTickCount64();
         DWORD64 time_passed = now - last_update;
 
-        if (!paused && time_passed >= interval) {
+        if (!paused && time_passed >= generation_interval_ms) {
             next_generation(&game);
             generation++;
 
