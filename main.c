@@ -1,16 +1,9 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 
 #include "life.h"
-
-#define ALIVE '#'
-#define DEAD '.'
-
-void print_grid(bool grid[ROWS][COLS]);
-
-int count_neighbors(bool grid[ROWS][COLS], int row, int col);
+#include "terminal.h"
 
 int main(void) {
     GameOfLife game = {0};
@@ -24,25 +17,15 @@ int main(void) {
 
 
     for (int gen = 0; gen < 10; gen++) {
-        printf("\033[H\033[2J");
+        terminal_clear();
 
         printf("Generation %d.\n", gen);
-        print_grid(game.cells);
-        fflush(stdout);
-
+        terminal_render(&game);
+        
         Sleep(500);
 
         next_generation(&game);
     }
 
     return EXIT_SUCCESS;
-}
-
-void print_grid(bool grid[ROWS][COLS]) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            putchar(grid[i][j] ? ALIVE : DEAD);
-        }
-        putchar('\n');
-    }
 }
