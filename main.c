@@ -96,18 +96,7 @@ int main(void) {
         }
 
         if (needs_render) {
-            terminal_home();
-            printf("Generation: %d  ", generation);
-
-            printf("Interval: %llu ms",
-                   (unsigned long long)generation_interval_ms);
-
-            if (paused)
-                printf(" [PAUSED]");
-
-            putchar('\n');
-            terminal_render(&game);
-
+            terminal_render_frame(&game, generation, generation_interval_ms, paused);
             needs_render = false;
         }
 

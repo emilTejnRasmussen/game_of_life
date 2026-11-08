@@ -14,5 +14,7 @@ void next_generation(GameOfLife *game);
 
 void life_seed_random(GameOfLife *game, int alive_percentage); 
 
+int life_count_alive(const GameOfLife *game);
+
 #endif
 

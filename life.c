@@ -57,3 +57,18 @@ void life_seed_random(GameOfLife *game, int alive_percentage)
         }
     }
 }
+
+int life_count_alive(const GameOfLife *game)
+{
+    int count = 0;
+
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (game->cells[i][j]) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
